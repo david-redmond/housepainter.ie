@@ -8,14 +8,22 @@ WORKDIR /usr/src
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
-
-ENV PORT=3000
+RUN npm ci --only=production=false
 
 # Copy the rest of the application code to the working directory
 COPY . .
 
+# Build the Next.js application
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# Start the application
-CMD ["node", "server.js"]
+# Set production environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Expose the port
+EXPOSE 3000
+
+# Start the Next.js application
+CMD ["npm", "start"]
