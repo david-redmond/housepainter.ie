@@ -1,33 +1,35 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 import { companyName, phone, phoneTel, serviceAreasSummary, whatsappLink } from "@/lib/constants";
 import CookieBanner from "@/components/CookieBanner";
 import CookiePreferencesLink from "@/components/CookiePreferencesLink";
 import MobileNav from "@/components/MobileNav";
+import SocialIcons from "@/components/SocialIcons";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.housepainter.ie"),
   title: {
-    default: "Southeast Painters | House Painters in Dublin, Wicklow, Wexford & Waterford",
+    default: "Southeast Painters | House Painters in Dublin, Wicklow & Wexford",
     template: `%s | ${companyName}`,
   },
   description:
-    "Premium painting and decorating services for homes and commercial properties across Dublin, Wicklow, Wexford, and Waterford.",
+    "Premium painting and decorating services for homes and commercial properties across Dublin, Wicklow, and Wexford.",
   openGraph: {
     type: "website",
     locale: "en_IE",
     url: "https://www.housepainter.ie",
     siteName: companyName,
-    title: "Southeast Painters | House Painters in Dublin, Wicklow, Wexford & Waterford",
+    title: "Southeast Painters | House Painters in Dublin, Wicklow & Wexford",
     description:
-      "Premium painting and decorating services for homes and commercial properties across Dublin, Wicklow, Wexford, and Waterford.",
+      "Premium painting and decorating services for homes and commercial properties across Dublin, Wicklow, and Wexford.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Southeast Painters | House Painters in Dublin, Wicklow, Wexford & Waterford",
+    title: "Southeast Painters | House Painters in Dublin, Wicklow & Wexford",
     description:
-      "Premium painting and decorating services for homes and commercial properties across Dublin, Wicklow, Wexford, and Waterford.",
+      "Premium painting and decorating services for homes and commercial properties across Dublin, Wicklow, and Wexford.",
   },
   alternates: {
     canonical: "/",
@@ -45,8 +47,15 @@ export default function RootLayout({
         <div className="min-h-screen bg-white">
           <header className="section-divider relative">
             <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
-              <Link href="/" className="text-lg font-semibold uppercase tracking-[0.2em]">
-                {companyName}
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/south-east-painter-logo-no-bg.png"
+                  alt={companyName}
+                  width={256}
+                  height={102}
+                  className="w-64 h-auto"
+                  priority
+                />
               </Link>
               <nav className="hidden items-center gap-8 text-sm uppercase tracking-[0.2em] text-[#1f1f1f] md:flex">
                 <Link href="/" className="hover:text-black">
@@ -78,7 +87,7 @@ export default function RootLayout({
               <div className="grid gap-8 md:grid-cols-3">
                 <div>
                   <p className="text-xs uppercase tracking-[0.24em] text-[#1f1f1f]">{companyName}</p>
-                  <p className="mt-3 text-sm text-[#5b5b5b]">Traditional painting & decorating.</p>
+                  <p className="mt-3 text-sm text-[#5b5b5b]">Superior painting and decorating services.</p>
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-[0.24em] text-[#1f1f1f]">Service Areas</p>
@@ -90,6 +99,9 @@ export default function RootLayout({
                   <p className="text-sm text-[#5b5b5b]">
                     WhatsApp: <a className="underline" href={whatsappLink}>Message us</a>
                   </p>
+                  <div className="mt-3">
+                    <SocialIcons />
+                  </div>
                 </div>
               </div>
 
