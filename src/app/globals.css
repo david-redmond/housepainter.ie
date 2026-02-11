@@ -1,26 +1,74 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: #ffffff;
+  --color-foreground: #111111;
+  --color-muted: #5b5b5b;
+  --color-divider: #e6e6e6;
+  --color-ink: #1f1f1f;
+  --color-ink-soft: #2a2a2a;
+  --font-heading: "Baskerville", "Times New Roman", serif;
+  --font-body: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #111111;
+  color: #ffffff;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading), ui-serif, Georgia, Cambria, "Times New Roman", serif;
+    color: var(--color-ink);
+  }
+
+  p {
+    color: var(--color-muted);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  input,
+  textarea,
+  button,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-none border border-transparent px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-[#111111] text-white hover:bg-[#2a2a2a];
+  }
+
+  .btn-secondary {
+    @apply border-[#1f1f1f] text-[#1f1f1f] hover:bg-[#f2f2f2];
+  }
+
+  .btn-muted {
+    @apply border-[#e6e6e6] text-[#1f1f1f] hover:bg-[#fafafa];
+  }
+
+  .section-divider {
+    @apply border-b border-[#e6e6e6];
+  }
 }
