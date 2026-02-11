@@ -7,8 +7,8 @@ const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 const rateLimitMap = new Map<string, { count: number; reset: number }>();
 
-function getClientIp() {
-  const headerList = headers();
+async function getClientIp() {
+  const headerList = await headers();
   const forwardedFor = headerList.get("x-forwarded-for");
   if (forwardedFor) {
     return forwardedFor.split(",")[0]?.trim() ?? "unknown";
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, error: "Spam detected." }, { status: 400 });
     }
 
-    const ip = getClientIp();
+    const ip = await getClientIp();
     if (isRateLimited(ip)) {
       return NextResponse.json(
         { ok: false, error: "Too many requests. Please try again in an hour." },
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const headerList = headers();
+    const headerList = await headers();
     const userAgent = headerList.get("user-agent") ?? "unknown";
     const timestamp = new Date().toISOString();
 
