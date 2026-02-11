@@ -3,7 +3,7 @@ export const CONSENT_KEY = "sp_cookie_consent";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 const GA_SCRIPT_ID = "ga-gtag";
 
-type GtagFn = (...args: any[]) => void;
+type GtagFn = (...args: unknown[]) => void;
 
 declare global {
   interface Window {
@@ -27,7 +27,7 @@ export function setConsent(value: "accepted" | "rejected") {
 function ensureGtag() {
   if (typeof window === "undefined") return;
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: any[]) {
+  window.gtag = function gtag(...args: unknown[]) {
     window.dataLayer?.push(args);
   } as GtagFn;
 }

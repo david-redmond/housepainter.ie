@@ -23,8 +23,8 @@ export default function CookiesPage() {
       <section className="mt-10 grid gap-4 text-sm">
         <p>
           This website uses cookies to ensure the site works properly and, with your consent, to
-          measure site usage. You can manage your preferences at any time via the "Change cookie
-          preferences" link in the footer.
+          measure site usage. You can manage your preferences at any time via the &quot;Change cookie
+          preferences&quot; link in the footer.
         </p>
       </section>
 
@@ -40,7 +40,7 @@ export default function CookiesPage() {
         <h2 className="text-2xl">Analytics Cookies (Google Analytics 4)</h2>
         <p>
           With your permission, we use Google Analytics 4 to understand how visitors interact with
-          the site. Typical cookies include "_ga" and "_ga_*" which help distinguish users and track
+          the site. Typical cookies include &quot;_ga&quot; and &quot;_ga_*&quot; which help distinguish users and track
           sessions. These cookies do not identify you personally.
         </p>
         <p>

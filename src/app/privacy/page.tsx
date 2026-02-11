@@ -22,7 +22,7 @@ export default function PrivacyPage() {
 
       <section className="mt-10 grid gap-4 text-sm">
         <p>
-          {companyName} ("we", "us", "our") respects your privacy and is committed to protecting
+          {companyName} (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) respects your privacy and is committed to protecting
           your personal data. This policy explains how we collect, use, and store information when you
           use www.housepainter.ie.
         </p>

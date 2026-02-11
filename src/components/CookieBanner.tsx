@@ -13,16 +13,17 @@ export default function CookieBanner() {
     const consent = getConsent();
     if (consent === "accepted") {
       enableAnalytics();
-      setVisible(false);
+      // Use setTimeout to avoid calling setState synchronously in effect
+      setTimeout(() => setVisible(false), 0);
       return;
     }
 
     if (consent === "rejected") {
-      setVisible(false);
+      setTimeout(() => setVisible(false), 0);
       return;
     }
 
-    setVisible(true);
+    setTimeout(() => setVisible(true), 0);
   }, []);
 
   useEffect(() => {
