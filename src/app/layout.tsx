@@ -1,12 +1,28 @@
 import type { Metadata } from "next";
+import { Libre_Baskerville, Source_Sans_3 } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
+
+const headingFont = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-heading-loaded",
+  display: "swap",
+});
+
+const bodyFont = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-body-loaded",
+  display: "swap",
+});
 import { companyName, phone, phoneTel, serviceAreasSummary, whatsappLink } from "@/lib/constants";
+import ContactTracking from "@/components/ContactTracking";
 import CookieBanner from "@/components/CookieBanner";
 import CookiePreferencesLink from "@/components/CookiePreferencesLink";
 import MobileNav from "@/components/MobileNav";
 import SocialIcons from "@/components/SocialIcons";
+import StickyCallBar from "@/components/StickyCallBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.housepainter.ie"),
@@ -42,9 +58,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-IE">
+    <html lang="en-IE" className={`${headingFont.variable} ${bodyFont.variable}`}>
       <body className="antialiased">
-        <div className="min-h-screen bg-white">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <div className="min-h-screen bg-white pb-16 md:pb-0">
           <header className="section-divider relative">
             <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
               <Link href="/" className="flex items-center">
@@ -61,11 +80,17 @@ export default function RootLayout({
                 <Link href="/" className="hover:text-black">
                   Home
                 </Link>
+                <Link href="/services" className="hover:text-black">
+                  Services
+                </Link>
+                <Link href="/areas" className="hover:text-black">
+                  Areas
+                </Link>
                 <Link href="/gallery" className="hover:text-black">
                   Gallery
                 </Link>
                 <Link href="/#quote" className="hover:text-black">
-                  Get a Quote
+                  Request a Quote
                 </Link>
               </nav>
               <div className="hidden items-center gap-3 md:flex">
@@ -80,14 +105,23 @@ export default function RootLayout({
             </div>
           </header>
 
-          <main>{children}</main>
+          <main id="main">{children}</main>
 
           <footer className="section-divider mt-20">
             <div className="mx-auto w-full max-w-6xl px-6 py-12">
-              <div className="grid gap-8 md:grid-cols-3">
+              <div className="grid gap-8 md:grid-cols-4">
                 <div>
                   <p className="text-xs uppercase tracking-[0.24em] text-[#1f1f1f]">{companyName}</p>
                   <p className="mt-3 text-sm text-[#5b5b5b]">Superior painting and decorating services.</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#1f1f1f]">Explore</p>
+                  <div className="mt-3 grid gap-2 text-sm text-[#5b5b5b]">
+                    <Link href="/services" className="hover:text-black">Services</Link>
+                    <Link href="/areas" className="hover:text-black">Areas We Cover</Link>
+                    <Link href="/about" className="hover:text-black">About</Link>
+                    <Link href="/faq" className="hover:text-black">FAQ</Link>
+                  </div>
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-[0.24em] text-[#1f1f1f]">Service Areas</p>
@@ -117,6 +151,8 @@ export default function RootLayout({
         </div>
 
         <CookieBanner />
+        <StickyCallBar />
+        <ContactTracking />
       </body>
     </html>
   );

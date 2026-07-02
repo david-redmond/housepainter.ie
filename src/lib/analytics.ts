@@ -22,6 +22,7 @@ export function getConsent(): "accepted" | "rejected" | "unknown" {
 export function setConsent(value: "accepted" | "rejected") {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(CONSENT_KEY, value);
+  window.dispatchEvent(new CustomEvent("sp:consent-change", { detail: value }));
 }
 
 function ensureGtag() {

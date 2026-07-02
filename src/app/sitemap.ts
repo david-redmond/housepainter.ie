@@ -1,11 +1,17 @@
 import type { MetadataRoute } from "next";
-import { baseUrl } from "@/lib/constants";
+import { baseUrl, serviceAreas } from "@/lib/constants";
+import { servicesContent } from "@/lib/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
+    "/services",
+    ...servicesContent.map((s) => `/services/${s.slug}`),
+    "/areas",
+    ...serviceAreas.map((a) => `/areas/${a.slug}`),
+    "/about",
+    "/faq",
     "/gallery",
-    "/thank-you",
     "/privacy",
     "/terms",
     "/cookies",

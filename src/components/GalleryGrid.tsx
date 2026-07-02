@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { companyName, serviceAreasSummary } from "@/lib/constants";
 
 interface GalleryGridProps {
   images: string[];
@@ -12,7 +13,7 @@ export default function GalleryGrid({ images, priorityCount = 0 }: GalleryGridPr
         <div key={image} className="aspect-[4/3] overflow-hidden bg-[#f4f4f4]">
           <Image
             src={`/gallery/${image}`}
-            alt={`Project ${index + 1}`}
+            alt={`${companyName} painting and decorating project ${index + 1} — ${serviceAreasSummary}`}
             width={1200}
             height={900}
             className="h-full w-full object-cover"

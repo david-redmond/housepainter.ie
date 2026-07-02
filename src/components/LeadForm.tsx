@@ -1,15 +1,25 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-import { quoteSchema, type QuotePayload } from "@/lib/validators";
+import { getAttribution } from "@/lib/attribution";
+import {
+  preferredContactOptions,
+  projectTypeOptions,
+  quoteSchema,
+  timelineOptions,
+  type QuotePayload,
+} from "@/lib/validators";
 
 const initialState: QuotePayload = {
   name: "",
   phone: "",
   email: "",
   addressOrEircode: "",
+  projectType: "",
+  timeline: "",
+  preferredContact: "",
   message: "",
   consent: false,
   companyWebsite: "",
@@ -17,14 +27,22 @@ const initialState: QuotePayload = {
 
 type FieldErrors = Partial<Record<keyof QuotePayload, string>>;
 
+const inputClass =
+  "border border-[#d9d9d9] px-4 py-3 focus:border-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black";
+
 export default function LeadForm() {
   const router = useRouter();
   const [formData, setFormData] = useState<QuotePayload>(initialState);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const startedRef = useRef(false);
 
   const updateField = (field: keyof QuotePayload, value: string | boolean) => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackEvent("form_start", { form: "quote" });
+    }
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
@@ -51,7 +69,7 @@ export default function LeadForm() {
     event.preventDefault();
     setFormError("");
 
-    const payload = { ...formData };
+    const payload: QuotePayload = { ...formData, attribution: getAttribution() };
     if (!validate(payload)) {
       return;
     }
@@ -72,6 +90,7 @@ export default function LeadForm() {
       }
 
       trackEvent("lead_submitted", { method: "quote_form" });
+      trackEvent("generate_lead", { method: "quote_form" });
       router.push("/thank-you");
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unable to submit right now.";
@@ -81,34 +100,46 @@ export default function LeadForm() {
     }
   };
 
+  const describedBy = (field: keyof QuotePayload) => (errors[field] ? `${field}-error` : undefined);
+
   return (
     <form className="grid gap-6" onSubmit={handleSubmit} noValidate>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm text-[#1f1f1f]">
           Name
           <input
-            className="border border-[#d9d9d9] px-4 py-3 focus:border-black focus:outline-none"
+            className={inputClass}
             type="text"
             name="name"
             autoComplete="name"
             value={formData.name}
             onChange={(event) => updateField("name", event.target.value)}
             aria-invalid={Boolean(errors.name)}
+            aria-describedby={describedBy("name")}
           />
-          {errors.name && <span className="text-xs text-[#9b2c2c]">{errors.name}</span>}
+          {errors.name && (
+            <span id="name-error" role="alert" className="text-xs text-[#9b2c2c]">
+              {errors.name}
+            </span>
+          )}
         </label>
         <label className="grid gap-2 text-sm text-[#1f1f1f]">
           Phone
           <input
-            className="border border-[#d9d9d9] px-4 py-3 focus:border-black focus:outline-none"
+            className={inputClass}
             type="tel"
             name="phone"
             autoComplete="tel"
             value={formData.phone}
             onChange={(event) => updateField("phone", event.target.value)}
             aria-invalid={Boolean(errors.phone)}
+            aria-describedby={describedBy("phone")}
           />
-          {errors.phone && <span className="text-xs text-[#9b2c2c]">{errors.phone}</span>}
+          {errors.phone && (
+            <span id="phone-error" role="alert" className="text-xs text-[#9b2c2c]">
+              {errors.phone}
+            </span>
+          )}
         </label>
       </div>
 
@@ -116,42 +147,106 @@ export default function LeadForm() {
         <label className="grid gap-2 text-sm text-[#1f1f1f]">
           Email
           <input
-            className="border border-[#d9d9d9] px-4 py-3 focus:border-black focus:outline-none"
+            className={inputClass}
             type="email"
             name="email"
             autoComplete="email"
             value={formData.email}
             onChange={(event) => updateField("email", event.target.value)}
             aria-invalid={Boolean(errors.email)}
+            aria-describedby={describedBy("email")}
           />
-          {errors.email && <span className="text-xs text-[#9b2c2c]">{errors.email}</span>}
+          {errors.email && (
+            <span id="email-error" role="alert" className="text-xs text-[#9b2c2c]">
+              {errors.email}
+            </span>
+          )}
         </label>
         <label className="grid gap-2 text-sm text-[#1f1f1f]">
           Address / Eircode
           <input
-            className="border border-[#d9d9d9] px-4 py-3 focus:border-black focus:outline-none"
+            className={inputClass}
             type="text"
             name="addressOrEircode"
             value={formData.addressOrEircode}
             onChange={(event) => updateField("addressOrEircode", event.target.value)}
             aria-invalid={Boolean(errors.addressOrEircode)}
+            aria-describedby={describedBy("addressOrEircode")}
           />
           {errors.addressOrEircode && (
-            <span className="text-xs text-[#9b2c2c]">{errors.addressOrEircode}</span>
+            <span id="addressOrEircode-error" role="alert" className="text-xs text-[#9b2c2c]">
+              {errors.addressOrEircode}
+            </span>
           )}
+        </label>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <label className="grid gap-2 text-sm text-[#1f1f1f]">
+          Project type <span className="text-[#5b5b5b]">(optional)</span>
+          <select
+            className={inputClass}
+            name="projectType"
+            value={formData.projectType}
+            onChange={(event) => updateField("projectType", event.target.value)}
+          >
+            <option value="">Select…</option>
+            {projectTypeOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-2 text-sm text-[#1f1f1f]">
+          Timeline <span className="text-[#5b5b5b]">(optional)</span>
+          <select
+            className={inputClass}
+            name="timeline"
+            value={formData.timeline}
+            onChange={(event) => updateField("timeline", event.target.value)}
+          >
+            <option value="">Select…</option>
+            {timelineOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-2 text-sm text-[#1f1f1f]">
+          Preferred contact <span className="text-[#5b5b5b]">(optional)</span>
+          <select
+            className={inputClass}
+            name="preferredContact"
+            value={formData.preferredContact}
+            onChange={(event) => updateField("preferredContact", event.target.value)}
+          >
+            <option value="">Select…</option>
+            {preferredContactOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
       <label className="grid gap-2 text-sm text-[#1f1f1f]">
         Project details
         <textarea
-          className="min-h-[140px] border border-[#d9d9d9] px-4 py-3 focus:border-black focus:outline-none"
+          className={`min-h-[140px] ${inputClass}`}
           name="message"
           value={formData.message}
           onChange={(event) => updateField("message", event.target.value)}
           aria-invalid={Boolean(errors.message)}
+          aria-describedby={describedBy("message")}
         />
-        {errors.message && <span className="text-xs text-[#9b2c2c]">{errors.message}</span>}
+        {errors.message && (
+          <span id="message-error" role="alert" className="text-xs text-[#9b2c2c]">
+            {errors.message}
+          </span>
+        )}
       </label>
 
       <div className="hidden" aria-hidden="true">
@@ -175,14 +270,23 @@ export default function LeadForm() {
           checked={formData.consent}
           onChange={(event) => updateField("consent", event.target.checked)}
           aria-invalid={Boolean(errors.consent)}
+          aria-describedby={describedBy("consent")}
         />
         <span>
           I consent to being contacted about my quote request.
-          {errors.consent && <span className="mt-1 block text-xs text-[#9b2c2c]">{errors.consent}</span>}
+          {errors.consent && (
+            <span id="consent-error" role="alert" className="mt-1 block text-xs text-[#9b2c2c]">
+              {errors.consent}
+            </span>
+          )}
         </span>
       </label>
 
-      {formError && <p className="text-sm text-[#9b2c2c]">{formError}</p>}
+      {formError && (
+        <p role="alert" className="text-sm text-[#9b2c2c]">
+          {formError}
+        </p>
+      )}
 
       <div className="flex flex-wrap items-center gap-4">
         <button className="btn btn-primary" type="submit" disabled={loading}>

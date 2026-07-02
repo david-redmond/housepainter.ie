@@ -47,6 +47,35 @@ export default function CookiesPage() {
           We set analytics cookies only after you accept them. If you reject analytics cookies, no
           analytics scripts are loaded.
         </p>
+
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-[#e6e6e6] text-[#1f1f1f]">
+                <th className="py-2 pr-4 font-semibold">Cookie</th>
+                <th className="py-2 pr-4 font-semibold">Purpose</th>
+                <th className="py-2 font-semibold">Typical duration</th>
+              </tr>
+            </thead>
+            <tbody className="text-[#5b5b5b]">
+              <tr className="border-b border-[#f0f0f0]">
+                <td className="py-2 pr-4">_ga</td>
+                <td className="py-2 pr-4">Distinguishes users (Google Analytics 4)</td>
+                <td className="py-2">2 years</td>
+              </tr>
+              <tr className="border-b border-[#f0f0f0]">
+                <td className="py-2 pr-4">_ga_*</td>
+                <td className="py-2 pr-4">Maintains session state (Google Analytics 4)</td>
+                <td className="py-2">2 years</td>
+              </tr>
+              <tr>
+                <td className="py-2 pr-4">sp_cookie_consent</td>
+                <td className="py-2 pr-4">Remembers your cookie choice (essential)</td>
+                <td className="py-2">Until cleared</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

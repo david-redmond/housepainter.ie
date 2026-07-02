@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/thank-you",
   },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: "Thank You",
     description: "Thanks for your quote request. We'll be in touch shortly.",

@@ -7,8 +7,8 @@
   --color-divider: #e6e6e6;
   --color-ink: #1f1f1f;
   --color-ink-soft: #2a2a2a;
-  --font-heading: "Baskerville", "Times New Roman", serif;
-  --font-body: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: var(--font-heading-loaded), "Baskerville", "Times New Roman", serif;
+  --font-body: var(--font-body-loaded), "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
@@ -48,6 +48,45 @@ body {
   select {
     font: inherit;
     color: inherit;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid #111111;
+    outline-offset: 2px;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: #111111;
+  color: #ffffff;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

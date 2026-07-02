@@ -12,6 +12,7 @@ export default function MobileNav() {
       <button
         type="button"
         className="text-xs uppercase tracking-[0.2em] text-[#1f1f1f]"
+        aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen((prev) => !prev)}
@@ -28,11 +29,20 @@ export default function MobileNav() {
             <Link href="/" onClick={() => setOpen(false)}>
               Home
             </Link>
+            <Link href="/services" onClick={() => setOpen(false)}>
+              Services
+            </Link>
+            <Link href="/areas" onClick={() => setOpen(false)}>
+              Areas
+            </Link>
             <Link href="/gallery" onClick={() => setOpen(false)}>
               Gallery
             </Link>
+            <Link href="/faq" onClick={() => setOpen(false)}>
+              FAQ
+            </Link>
             <Link href="/#quote" onClick={() => setOpen(false)}>
-              Get a Quote
+              Request a Quote
             </Link>
           </div>
           <div className="mt-6 flex flex-wrap gap-3">

@@ -79,8 +79,22 @@ export default function PrivacyPage() {
       <section className="mt-10 grid gap-4 text-sm">
         <h2 className="text-2xl">Third Parties</h2>
         <p>
-          We use trusted service providers to run this site and deliver emails. These providers only
-          process your data on our instructions. We do not sell your personal information.
+          We use trusted service providers (processors) to run this site and deliver emails. These
+          providers only process your data on our instructions. We do not sell your personal
+          information. Our current processors include:
+        </p>
+        <ul className="list-disc pl-5 text-sm text-[#5b5b5b]">
+          <li>Google Analytics 4 — website usage analytics (only after you accept analytics cookies).</li>
+          <li>Resend — delivery of quote-request notification and confirmation emails.</li>
+          <li>Our website hosting and content-delivery provider — to serve this site.</li>
+        </ul>
+      </section>
+
+      <section className="mt-10 grid gap-4 text-sm">
+        <h2 className="text-2xl">Complaints</h2>
+        <p>
+          If you have concerns about how we handle your personal data, you have the right to lodge a
+          complaint with the Irish Data Protection Commission (www.dataprotection.ie).
         </p>
       </section>
 
